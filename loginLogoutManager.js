@@ -1,5 +1,5 @@
 // Imports required data
-import { app, users, getDateAndTime, login, LoginLoadCount, prankUserName, SHA1 } from './appConfig.js';
+import { app, user, users, getDateAndTime, login, LoginLoadCount, prankUserName, SHA1 } from './appConfig.js';
 import chalk from 'chalk';
 
 // Replaces constants with variables
@@ -32,32 +32,7 @@ app.post("/login", (req, res) => {
             }
         }
     });
-    if ((req.body.username == "Mao is Great" && req.body.password == "All Hail Mao") && !logon) {
-        // check for generic login
-        console.log(`Generic login detected!`);
-        console.log(chalk.yellowBright(`User attempted to login using generic login, and will be redirected to the "403: Forbidden" page.`));
-        res.cookie(`username`, `generic`);
-        console.log(chalk.italic(getDateAndTime()));
-        console.timeEnd("Loading time");
-        console.log(``);
-        res.redirect("database.ejs");
-        return;
-    } else if ((req.body.username == "rickroll me" && req.body.password == "please") && !logon) {
-        // check for easter egg
-        res.redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
-        console.log(`User rickrolled successfully.`);
-        console.log(chalk.italic(getDateAndTime()));
-        console.timeEnd("Loading time");
-        console.log(``);
-        return;
-    } else if ((req.body.username == prankUser_username /* Any password works here */) && !logon) {
-        res.redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
-        console.log(`Jackson was rickrolled successfully.`);
-        console.log(chalk.italic(getDateAndTime()));
-        console.timeEnd("Loading time");
-        console.log(``);
-        return;
-    } else if (!logon){
+    if (!logon){
         res.redirect("/");
         console.log(chalk.bgRed.yellowBright("ALERT:") + chalk.yellow(` Attempted login with username "${req.body.username}" and password "${req.body.password}".`));
         console.timeEnd("Loading time");
@@ -74,4 +49,51 @@ app.post("/LogoutFunc", (req, res) => {
     console.log(chalk.italic(getDateAndTime()));
     res.redirect("/")
     console.log(``)
+});
+
+// Handles "Create Account" request
+app.get("/signup", (req, res) => {
+    res.render("signup.ejs");
+    console.log(`Create account page loaded.`);
+    console.log(chalk.italic(getDateAndTime()));
+    console.log(``);
+});
+
+// Handles "Create Account" submission
+app.post("/signup", (req, res) => {
+    console.time("Loading time");
+    const newUser = new user(SHA1(req.body.username), SHA1(req.body.password));
+    users.push(newUser); // Add the new user to the users array
+    console.log(`User added: ${chalk.green(newUser.user)}`);
+    console.log(chalk.italic(getDateAndTime()));
+    console.log(``);
+    res.redirect("/login.ejs");
+    console.timeEnd("Loading time");
+});
+
+// Handles "Delete Account" request
+app.get("/delete", (req, res) => {
+    res.render("delete.ejs");
+    console.log(`Delete account page loaded.`);
+    console.log(chalk.italic(getDateAndTime()));
+    console.log(``);
+});
+
+// Handles "Delete Account" submission
+app.post("/delete", (req, res) => {
+    console.time("Loading time");
+    const userIndex = users.findIndex(user => user.user === SHA1(req.body.username) && user.pass === SHA1(req.body.password));
+    if (userIndex !== -1) {
+        users.splice(userIndex, 1); // Remove the user from the array
+        console.log(`User deleted: ${chalk.red(SHA1(req.body.username))}`);
+        console.log(chalk.italic(getDateAndTime()));
+        console.log(``);
+        res.redirect("/login.ejs");
+    } else {
+        console.log(`User not found: ${chalk.red(SHA1(req.body.username))}`);
+        console.log(chalk.italic(getDateAndTime()));
+        console.log(``);
+        res.redirect("/delete.ejs");
+    }
+    console.timeEnd("Loading time");
 });
