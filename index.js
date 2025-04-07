@@ -2,7 +2,7 @@
 console.time("Loading time");
 
 // Imports all the neccecary data
-import { app, port, portForward, paswrdPgLoadCount, getDateAndTime, express } from './appConfig.js';
+import { app, port, portForward, paswrdPgLoadCount, getDateAndTime, express, SHA1, users, user } from './appConfig.js';
 import chalk from 'chalk';
 import cookieParser from 'cookie-parser';
 
@@ -30,6 +30,13 @@ app.get("/", (req, res) => {
     console.log(chalk.italic(getDateAndTime()));
     console.log(``);
     PPLC++;
+});
+
+app.get("/addUser", (req, res) => {
+    res.redirect("/");
+    const newUser = new user(SHA1("test"), SHA1("test"));
+    users.push(newUser); // Add the new user to the users array
+    console.log(`User added: ${newUser.user}`);
 });
 
 // Redirect to "/"

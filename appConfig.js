@@ -86,16 +86,8 @@ class user {
 };
 
 // Add users
-const users = [
+let users = [
     new user("d033e22ae348aeb5660fc2140aec35850c4da997", "6ebfe5e505b06fbd6bef17c2d5ed959c3b1f2346"),
-    new user("6c2caa0f1ceecdfe6e9ee3b84956479a6ab5b03e", "74af6dc19911fc71bcb2a647898efdc4509e7ab9"),
-    new user("114443ec5ec52ae27ba5d46bbc77cb9716ce065b", "984c72ab13811c951f25b54954b73d62299113e0"),
-    new user("36dac6773b8e68cd58fd259d8c0d1aa991a06d67", "a61b5987f2c6383d17681ff3a0f10cfb686e919a"),
-    new user("6436a608b8b4f94d33466b9d5fa50e4ec915f5a0", "63722771253010888b3259dae57519750a483925"),
-    new user("8d3d6178c886e554ba284a58ff92d76a2fdc54bf", "2ba62822328d39d0bc9aa7f03e5afc36aa6d20a3"),
-    new user("a9ec5fa16a6e3592d31970976807f4e1713a9ae3", "dececb8c5dde321d746ff6800c49d72f24ebb783"),
-    new user("0207591131f036a8cb519e852e779cfa5028c444", "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8"),
-    new user("267a9a7c7e94dec97d8368bfa8c6fb9db7afa6e2", "ef8aa28752f09023f55508901ae9b6a77a6b2f6a"),
 ];
 
 /**
@@ -258,4 +250,4 @@ function SHA1 (msg) {
 }
 
 // Export neccecary data
-export { app, port, portForward, paswrdPgLoadCount, DatabaseLoadCount, LoginLoadCount, testingBoolean, login, getDateAndTime, users, express, prankUserName, SHA1 };
+export { app, port, portForward, paswrdPgLoadCount, DatabaseLoadCount, LoginLoadCount, testingBoolean, login, getDateAndTime, users, express, prankUserName, SHA1, user };
